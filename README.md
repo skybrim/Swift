@@ -1,2 +1,2 @@
-# Swift
-Swift学习中归纳的技巧
+# iOS-Swift
+Swift开发iOS中，归纳的技巧
