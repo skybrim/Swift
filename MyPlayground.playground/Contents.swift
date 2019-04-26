@@ -91,9 +91,25 @@ leters.insert("a")
 print(leters)
 leters = []
 
+//var itemSet = Set<Any>()
+//print(itemSet)
+var itemArray: Array<Any> = ["Any",123,"123"]
+print(itemArray)
+
+var airports = ["YTZ":"Toronto Pearson", "DUB":"Dublin",]
 
 
+let base = 3
+let power = 3
+var answer = 1
+for _ in 1..<power {
+    answer *= base
+}
+print(answer)
 
-
+let minuteInterval = 5
+for tickMark in stride(from: 0, through: 60, by: 5) {
+    print(tickMark)
+}
 
 
