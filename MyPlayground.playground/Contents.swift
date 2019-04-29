@@ -112,4 +112,43 @@ for tickMark in stride(from: 0, through: 60, by: 5) {
     print(tickMark)
 }
 
+let puzzleInput = "great minds think alike"
+var puzzleOutput = ""
+for character in puzzleInput {
+    switch character {
+    case "a", "e", "i", "o", "u", " ":
+        continue
+    default:
+        puzzleOutput += String(character)
+    }
+}
+print(puzzleOutput)
+
+func minMax(array: [Int]) -> (min: Int, max: Int)? {
+    if array.isEmpty { return nil }
+    var currentMin = array[0]
+    var currentMax = array[0]
+    for value in array[1..<array.count] {
+        if value < currentMin {
+            currentMin = value
+        }else if value > currentMax {
+            currentMax = value
+        }
+    }
+    return (currentMin, currentMax)
+}
+
+if let bounds = minMax(array: [1]) {
+    print(bounds.min, bounds.max)
+}
+
+func swapTwoInts(a: inout Int, b: inout Int) {
+    let tmpA = a
+    a = b
+    b = tmpA
+}
+var qqq = 10
+var www = 15
+swapTwoInts(a: &qqq, b: &www)
+print(qqq, www)
 
