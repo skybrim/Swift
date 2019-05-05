@@ -152,3 +152,69 @@ var www = 15
 swapTwoInts(a: &qqq, b: &www)
 print(qqq, www)
 
+func addTwoInts(_ a: Int, _ b: Int) -> Int{
+    
+    return a + b
+}
+
+func printMathResult(_ mathFunction: (Int, Int) -> Int, _ a: Int, _ b: Int) {
+    print("Result: \(mathFunction(a, b))")
+}
+
+printMathResult(addTwoInts, 1, 2)
+
+let names = ["Chris", "Alex", "Ewa", "Barry", "Daniella",]
+
+var reversedNames: [String]
+reversedNames = names.sorted(by: >)
+print(reversedNames)
+
+let digitNames = [
+    0:"Zero", 1:"One", 2:"Two", 3:"Three", 4:"Four",
+    5:"Five", 6:"Six", 7:"Seven", 8:"Eight", 9:"Nine",
+]
+
+let numbers = [16, 58, 510]
+
+let strings = numbers.map {
+    (number) -> String in
+    var number = number
+    var output = ""
+    
+    repeat {
+        output = digitNames[number % 10]! + output
+        number = number / 10
+    }while number > 0
+    return output
+}
+print(strings)
+
+
+var completionHandlers: [() -> Void] = []
+
+indirect enum ArithmeticExpression {
+    case number(Int)
+    case addition(ArithmeticExpression, ArithmeticExpression)
+    case multiplication(ArithmeticExpression, ArithmeticExpression)
+}
+
+let five = ArithmeticExpression.number(5)
+let four = ArithmeticExpression.number(4)
+let sum = ArithmeticExpression.addition(five, four)
+let product = ArithmeticExpression.multiplication(five, four)
+
+func evaluate(_ expression: ArithmeticExpression) -> Int {
+    switch expression {
+    case let .number(value):
+        return value
+    case let .addition(left, right):
+        return evaluate(left) + evaluate(right)
+    case let .multiplication(left, right):
+        return evaluate(left) * evaluate(right)
+    }
+}
+
+print(evaluate(five))
+print(evaluate(ArithmeticExpression.addition(ArithmeticExpression.number(4), ArithmeticExpression.number(4))))
+print(evaluate(ArithmeticExpression.multiplication(ArithmeticExpression.number(4), ArithmeticExpression.number(4))))
+
