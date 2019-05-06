@@ -218,3 +218,15 @@ print(evaluate(five))
 print(evaluate(ArithmeticExpression.addition(ArithmeticExpression.number(4), ArithmeticExpression.number(4))))
 print(evaluate(ArithmeticExpression.multiplication(ArithmeticExpression.number(4), ArithmeticExpression.number(4))))
 
+struct Resolution {
+    var width = 0
+    var height = 0
+    var vi = VideoMode()
+}
+
+class VideoMode {
+    var resolution = Resolution()
+    var interlaced = false
+    var frameRate = 0.0
+    var name: String?
+}
