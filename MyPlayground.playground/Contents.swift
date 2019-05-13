@@ -564,4 +564,76 @@ for thing in things {
     }
 }
 
+extension Int {
+    enum Kind {
+        case negative, zero, positive
+    }
+    
+    var kind: Kind {
+        switch self {
+        case 0:
+            return .zero
+        case let x where x > 0:
+            return .positive
+        default:
+            return .negative
+        }
+    }
+}
+
+protocol FullyNamed {
+    var fullName: String { get }
+    static func someTypeMethod()
+}
+
+struct PersonProtocol: FullyNamed {
+    var fullName: String
+    static func someTypeMethod() {
+        
+    }
+}
+let john = PersonProtocol(fullName: "John Appleseed")
+// john.fullName 为 "John Appleseed"
+
+
+
+protocol RandomNumberGenerator {
+    func random() -> Double
+}
+class LinearCongruentialGenerator: RandomNumberGenerator {
+    var lastRandom = 42.0
+    let m = 139968.0
+    let a = 3877.0
+    let c = 29573.0
+    func random() -> Double {
+        lastRandom = ((lastRandom * a + c).truncatingRemainder(dividingBy:m))
+        return lastRandom / m
+    }
+}
+let generator = LinearCongruentialGenerator()
+print("Here's a random number: \(generator.random())")
+// 打印 “Here's a random number: 0.37464991998171”
+print("And another one: \(generator.random())")
+// 打印 “And another one: 0.729023776863283”
+class Dice {
+    let sides: Int
+    let generator: RandomNumberGenerator
+    init(sides: Int, generator: RandomNumberGenerator) {
+        self.sides = sides
+        self.generator = generator
+    }
+    func roll() -> Int {
+        return Int(generator.random() * Double(sides)) + 1
+    }
+}
+protocol DiceGame {
+    var dice: Dice { get }
+    func play()
+}
+protocol DiceGameDelegate {
+    func gameDidStart(_ game: DiceGame)
+    func game(_ game: DiceGame, didStartNewTurnWithDiceRoll diceRoll: Int)
+    func gameDidEnd(_ game: DiceGame)
+}
+
 
