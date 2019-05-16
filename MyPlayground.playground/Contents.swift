@@ -636,4 +636,44 @@ protocol DiceGameDelegate {
     func gameDidEnd(_ game: DiceGame)
 }
 
+protocol TestProtocol {
+    
+}
 
+class ProtocolTestA: TestProtocol {
+    
+}
+
+class ProtocolTestB: TestProtocol {
+    
+}
+
+let protocolArray: [TestProtocol] = [ProtocolTestA(), ProtocolTestB()]
+
+func swapTwoInts(_ a: inout Int, _ b: inout Int) {
+    let temporaryA = a
+    a = b
+    b = temporaryA
+}
+var someInt = 3
+var anotherInt = 107
+swapTwoInts(&someInt, &anotherInt)
+print("someInt is now \(someInt), and anotherInt is now \(anotherInt)")
+// 打印“someInt is now 107, and anotherInt is now 3”
+
+func swapTwoValues<T>(_ a: inout T, _ b: inout T) {
+    let temporaryA = a
+    a = b
+    b = temporaryA
+}
+
+struct Player {
+    var name: String
+    var health: Int
+    var energy: Int
+    
+    static let maxHealth = 10
+    mutating func restoreHealth() {
+        health = Player.maxHealth
+    }
+}
