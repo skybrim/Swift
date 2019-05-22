@@ -13,6 +13,8 @@ class FirstTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.navigationController?.navigationBar.topItem?.title = ""
+
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "secondCell")
         self.tableView.tableFooterView = UIView(frame: CGRect.zero)
         
@@ -23,6 +25,10 @@ class FirstTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
+    @IBAction func unwindSegueBackToFirst(segue: UIStoryboardSegue) {
+        
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
