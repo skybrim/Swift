@@ -19,7 +19,7 @@ class ViewController: UIViewController {
     
     //lazy，需要时才初始化，可以使用全局变量
     private lazy var game = Concentration(numberOfPairsOfCards: cardButtonPairsNum)
-    //计算属性，获取卡牌有多少对
+    //使用计算属性，获取卡牌有多少对
     private var cardButtonPairsNum: Int {
         return cardButtons.count/2
     }
@@ -48,7 +48,6 @@ class ViewController: UIViewController {
         for index in cardButtons.indices {
             let button = cardButtons[index]
             let card = game.cards[index]
-            
             if card.isFaceUp == true {
                 //卡牌朝上
                 button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
@@ -78,7 +77,7 @@ extension Int {
         if self > 0 {
             return Int(arc4random_uniform(UInt32(self)))
         } else if self < 0 {
-            return -Int(arc4random_uniform(UInt32(-self)))
+            return -Int(arc4random_uniform(UInt32(self)))
         } else {
             return 0
         }
