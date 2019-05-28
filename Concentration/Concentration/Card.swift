@@ -17,7 +17,7 @@ struct Card {
     //静态方法
     static var identifierFactor = 0
     
-    static func getUniqueIdentifier() -> Int {
+    private static func getUniqueIdentifier() -> Int {
         identifierFactor += 1
         return identifierFactor
     }
