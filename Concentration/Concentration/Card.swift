@@ -15,7 +15,7 @@ struct Card {
     var identifier: Int
 
     //静态方法
-    static var identifierFactor = 0
+    static private var identifierFactor = 0
     
     private static func getUniqueIdentifier() -> Int {
         identifierFactor += 1
@@ -25,5 +25,20 @@ struct Card {
     init() {
         identifier = Card.getUniqueIdentifier()
     }
+    
+}
+
+extension Card: Hashable {
+    
+    func hash(into hasher: inout Hasher) {
+        
+        hasher.combine(identifier)
+    }
+    
+    //实现 equal（==） 的方法
+    static func ==(lhs: Card, rhs: Card) -> Bool {
+        return lhs.identifier == rhs.identifier
+    }
+    
     
 }

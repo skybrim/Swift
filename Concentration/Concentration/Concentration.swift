@@ -8,22 +8,12 @@
 
 import Foundation
 
-class Concentration {
+struct Concentration {
     
     private(set) var cards = [Card]()
     private var indexOfOneAndOnlyFaceUpCard: Int? {
         get {
-            var foundIndex: Int?
-            for index in cards.indices {
-                if cards[index].isFaceUp == true {
-                    if foundIndex == nil {
-                        foundIndex = index
-                    } else {
-                        return nil
-                    }
-                }
-            }
-            return foundIndex
+            return cards.indices.filter{ cards[$0].isFaceUp == true }.oneAndOnly
         }
         set {
             for flipdownIndex in cards.indices {
@@ -32,18 +22,21 @@ class Concentration {
         }
     }
     
-    func chooseCard(at index: Int) {
+    mutating func chooseCard(at index: Int) {
         //选择的卡牌是未匹配的
         if cards[index].isMatched == false {
             //有一张翻开的牌，并且翻开的牌和此次选中的牌不一样
-            if indexOfOneAndOnlyFaceUpCard != nil, indexOfOneAndOnlyFaceUpCard != index {
+            if let matchIndex = indexOfOneAndOnlyFaceUpCard, matchIndex != index {
+            
                 //对比已经翻开的牌和选中的牌
-                if cards[index].identifier == cards[indexOfOneAndOnlyFaceUpCard!].identifier {
+                if cards[index] == cards[matchIndex] {
                     cards[index].isMatched = true
-                    cards[indexOfOneAndOnlyFaceUpCard!].isMatched = true
+                    cards[matchIndex].isMatched = true
                 }
-                //翻开选中的牌
+                
+                //翻开选中的牌，需要放在对比之后，如果先翻开牌，会改变属性 indexOfOneAndOnlyFaceUpCard
                 cards[index].isFaceUp = true
+
             } else {
                 //两种情况
                 //1、没有翻开的牌
@@ -85,5 +78,11 @@ class Concentration {
          7. 将 arr 的倒数第二个元素和下标为 x 的
          如上，直到输出 m 个数为止
          */
+    }
+}
+
+extension Collection {
+    var oneAndOnly: Element? {
+        return count == 1 ? first : nil
     }
 }
