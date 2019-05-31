@@ -17,7 +17,7 @@ struct PlayingCard: CustomStringConvertible {
 
     enum Suit: String, CustomStringConvertible {
         
-        var description: String { return "\(self.rawValue)" }
+        var description: String { return rawValue }
         
         case spades = "♠️"
         case hearts = "❤️"
