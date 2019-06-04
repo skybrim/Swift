@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ConcentrationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,6 +61,9 @@ class ViewController: UIViewController {
     
     //model修改，更新View
     private func updateViewFromModel() {
+        if cardButtons == nil {
+            return
+        }
         for index in cardButtons.indices {
             let button = cardButtons[index]
             let card = game.cards[index]
@@ -75,6 +78,15 @@ class ViewController: UIViewController {
             }
         }
     }
+    
+    var theme: String? {
+        didSet {
+            emojiChoices = theme ?? ""
+            emoji = [:]
+            updateViewFromModel()
+        }
+    }
+    
     
     //获取emoji
     private var emojiChoices =  "🦇😱🙀😈🎃👻🍭🍬🍎"
