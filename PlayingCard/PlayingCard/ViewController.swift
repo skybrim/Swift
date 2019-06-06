@@ -9,39 +9,82 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    @IBOutlet private var cardViews: [PlayingCardView]!
+    
     var deck = PlayingCardDeck()
-    @IBOutlet weak var playingCardView: PlayingCardView! {
-        didSet {
-            //代码添加手势：swipe
-            let swipe = UISwipeGestureRecognizer(target: self, action: #selector(nextCard))
-            swipe.direction = [.left, .right]
-            playingCardView.addGestureRecognizer(swipe)
-            
-            let pinch = UIPinchGestureRecognizer(target: playingCardView, action: #selector(playingCardView.adjustFaceCardScal(_:)))
-            playingCardView.addGestureRecognizer(pinch)
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-    }
-    
-    //IB添加手势，tap
-    @IBAction func flipCard(_ sender: UITapGestureRecognizer) {
-        switch sender.state {
-        case .ended:
-            playingCardView.isFaceUp = !playingCardView.isFaceUp
-        default:
-            break
+        var cards = [PlayingCard]()
+        for _ in 0...((cardViews.count+1)/2) {
+            let card = deck.drawCard()!
+            cards += [card, card]
+        }
+        for playingCardView in cardViews {
+            playingCardView.isFaceUp = false
+            let card = cards.remove(at: cards.count.arc4random)
+            playingCardView.suit = card.suit.rawValue
+            playingCardView.rank = card.rank.order
+            playingCardView.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(flipCard(_:))))
         }
     }
     
-    @objc func nextCard() {
-        if let card = deck.drawCard() {
-            playingCardView.rank = card.rank.order
-            playingCardView.suit = card.suit.rawValue
+    private var faceUpViews: [PlayingCardView] {
+        
+        return cardViews.filter{ $0.isFaceUp }
+    }
+    
+    private var isFaceUpViewMatch: Bool {
+        
+        return faceUpViews.count == 2 && faceUpViews[0].suit == faceUpViews[1].suit && faceUpViews[0].rank == faceUpViews[1].rank
+    }
+    
+    private var lastClickView: PlayingCardView?
+    
+    @objc func flipCard(_ sender: UITapGestureRecognizer) {
+        switch sender.state {
+        case .ended:
+            if let clickView = sender.view as? PlayingCardView, faceUpViews.count < 2 {
+                lastClickView = clickView
+                UIView.transition(
+                    with: clickView,
+                    duration: 0.5,
+                    options: [.transitionFlipFromLeft],
+                    animations: {
+                        clickView.isFaceUp = !clickView.isFaceUp
+                }){ (finished) in
+                    if self.isFaceUpViewMatch {
+                        UIViewPropertyAnimator.runningPropertyAnimator(
+                            withDuration: 0.6,
+                            delay: 0,
+                            options: [],
+                            animations: {
+                                self.faceUpViews.forEach{
+                                    $0.transform = CGAffineTransform.identity.scaledBy(x: 3.0, y: 3.0)
+                                }
+                        },
+                            completion: { (UIViewAnimatingPosition) in
+                                
+                        })
+                    } else if self.faceUpViews.count == 2 {
+                        if self.lastClickView == clickView {
+                            UIViewPropertyAnimator.runningPropertyAnimator(
+                                withDuration: 0.5,
+                                delay: 0,
+                                options: [.transitionFlipFromLeft],
+                                animations: {
+                                    self.faceUpViews.forEach{
+                                        $0.isFaceUp = false
+                                    }
+                            })
+                        }
+                    }
+                }
+            }
+        default:
+            break
         }
     }
 }
