@@ -13,8 +13,16 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
-        fetchImage()
+        if imageURL == nil {
+            imageURL = Bundle.main.url(forResource: "banter-snaps-1667073-unsplash", withExtension: "jpg")
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if imageView.image == nil {
+            fetchImage()
+        }
     }
     
     @IBOutlet weak var imageView: UIImageView!
@@ -38,7 +46,11 @@ class ViewController: UIViewController {
     }
     
     private func fetchImage() {
-        
+        if let url = imageURL {
+            if let imageData = try? Data(contentsOf: url) {
+                image = UIImage(data: imageData)
+            }
+        }
     }
 }
 
