@@ -8,14 +8,11 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIScrollViewDelegate {
+class ImageViewController: UIViewController, UIScrollViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        if imageURL == nil {
-            imageURL = Bundle.main.url(forResource: "banter-snaps-1667073-unsplash", withExtension: "jpg")
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -33,6 +30,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
             scrollView.addSubview(imageView)
         }
     }
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
@@ -40,7 +38,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
 
     var imageView = UIImageView()
     
-    private var imageURL: URL? {
+    var imageURL: URL? {
         didSet {
             image = nil
             if self.view.window != nil {
@@ -57,13 +55,20 @@ class ViewController: UIViewController, UIScrollViewDelegate {
             imageView.image = newValue
             imageView.sizeToFit()
             scrollView?.contentSize = imageView.frame.size
+            spinner?.stopAnimating()
+//            spinner?.isHidden = true
         }
     }
     
     private func fetchImage() {
         if let url = imageURL {
-            if let imageData = try? Data(contentsOf: url) {
-                image = UIImage(data: imageData)
+            spinner.startAnimating()
+            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+                if let imageData = try? Data(contentsOf: url), url == self?.imageURL {
+                    DispatchQueue.main.async {
+                        self?.image = UIImage(data: imageData)
+                    }
+                }
             }
         }
     }

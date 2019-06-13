@@ -14,6 +14,7 @@
 		B842118522AFA61F00AA68E0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B842118322AFA61F00AA68E0 /* LaunchScreen.storyboard */; };
 		B842119122AFAF5C00AA68E0 /* banter-snaps-1667073-unsplash.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B842119022AFAF5C00AA68E0 /* banter-snaps-1667073-unsplash.jpg */; };
 		B842119322AFAF7900AA68E0 /* DemoURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B842119222AFAF7900AA68E0 /* DemoURLs.swift */; };
+		B8827AC122B219EF00E69617 /* ChooseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8827AC022B219EF00E69617 /* ChooseViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		B842118622AFA61F00AA68E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B842119022AFAF5C00AA68E0 /* banter-snaps-1667073-unsplash.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "banter-snaps-1667073-unsplash.jpg"; sourceTree = "<group>"; };
 		B842119222AFAF7900AA68E0 /* DemoURLs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoURLs.swift; sourceTree = "<group>"; };
+		B8827AC022B219EF00E69617 /* ChooseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				B842117A22AFA61D00AA68E0 /* AppDelegate.swift */,
+				B8827AC022B219EF00E69617 /* ChooseViewController.swift */,
 				B842117C22AFA61D00AA68E0 /* ViewController.swift */,
 				B842119222AFAF7900AA68E0 /* DemoURLs.swift */,
 				B842117E22AFA61D00AA68E0 /* Main.storyboard */,
@@ -143,6 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B842117D22AFA61D00AA68E0 /* ViewController.swift in Sources */,
+				B8827AC122B219EF00E69617 /* ChooseViewController.swift in Sources */,
 				B842117B22AFA61D00AA68E0 /* AppDelegate.swift in Sources */,
 				B842119322AFAF7900AA68E0 /* DemoURLs.swift in Sources */,
 			);
