@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EmojiArtViewController: UIViewController, UIDropInteractionDelegate, UIScrollViewDelegate
+class EmojiArtViewController: UIViewController, UIDropInteractionDelegate, UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate
 {
 
     override func viewDidLoad() {
@@ -58,7 +58,7 @@ class EmojiArtViewController: UIViewController, UIDropInteractionDelegate, UIScr
     }
 
     
-    //MARK: -
+    //MARK: - ScrollView
     var emojiArtView = EmojiArtView()
     
     var emojiArtBackgroundImage: UIImage? {
@@ -97,6 +97,31 @@ class EmojiArtViewController: UIViewController, UIDropInteractionDelegate, UIScr
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return emojiArtView
+    }
+    
+    //MARK: - CollectionView
+    @IBOutlet weak var collectionView: UICollectionView! {
+        didSet {
+            collectionView.delegate = self
+            collectionView.dataSource = self
+        }
+    }
+    
+    var emojis = "😀🎁✈️🎱🍎🐶🐝☕️🎼🚲♣️👨‍🎓✏️🌈🤡🎓👻☎️".map { String($0) }
+    
+    var font = UIFontMetrics(forTextStyle: UIFont.TextStyle.body).scaledFont(for: UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body)).withSize(64.0)
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return emojis.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCell", for: indexPath)
+        if let emojiCell = cell as? EmojiCollectionViewCell {
+            let text = NSAttributedString(string: emojis[indexPath.row], attributes: [.font : font])
+            emojiCell.label.attributedText = text
+        }
+        return cell
     }
     
     /*
