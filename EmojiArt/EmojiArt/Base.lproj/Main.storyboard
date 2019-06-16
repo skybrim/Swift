@@ -21,17 +21,18 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KcU-l9-oOQ">
                                 <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xe7-PR-1hp" customClass="EmojiArtView" customModule="EmojiArt" customModuleProvider="target">
+                                    <scrollView verifyAmbiguity="off" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uu9-pb-eBR">
                                         <rect key="frame" x="0.0" y="0.0" width="768" height="1004"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </view>
+                                        <constraints>
+                                            <constraint firstAttribute="height" priority="250" constant="1004" id="TAY-be-J0w"/>
+                                            <constraint firstAttribute="width" priority="250" constant="768" id="wdt-T9-cta"/>
+                                        </constraints>
+                                    </scrollView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="xe7-PR-1hp" firstAttribute="leading" secondItem="KcU-l9-oOQ" secondAttribute="leading" id="FAH-IX-ltG"/>
-                                    <constraint firstAttribute="bottom" secondItem="xe7-PR-1hp" secondAttribute="bottom" id="JqI-wo-FX6"/>
-                                    <constraint firstItem="xe7-PR-1hp" firstAttribute="top" secondItem="KcU-l9-oOQ" secondAttribute="top" id="hA0-de-hvT"/>
-                                    <constraint firstAttribute="trailing" secondItem="xe7-PR-1hp" secondAttribute="trailing" id="iRO-sY-laR"/>
+                                    <constraint firstItem="Uu9-pb-eBR" firstAttribute="centerY" secondItem="KcU-l9-oOQ" secondAttribute="centerY" id="9xP-Kb-cqL"/>
+                                    <constraint firstItem="Uu9-pb-eBR" firstAttribute="centerX" secondItem="KcU-l9-oOQ" secondAttribute="centerX" id="OTd-QO-ubj"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -46,7 +47,9 @@
                     </view>
                     <connections>
                         <outlet property="dropZone" destination="KcU-l9-oOQ" id="JGI-es-mWg"/>
-                        <outlet property="emojiArtView" destination="xe7-PR-1hp" id="wdy-lT-H1B"/>
+                        <outlet property="scrollView" destination="Uu9-pb-eBR" id="552-bM-2uT"/>
+                        <outlet property="scrollViewHeight" destination="TAY-be-J0w" id="Qrp-2b-JLx"/>
+                        <outlet property="scrollViewWidth" destination="wdt-T9-cta" id="JAP-pC-eiJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6cq-04-FLW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -56,7 +59,6 @@
         <!--Emoji Art Document Table View Controller-->
         <scene sceneID="gjZ-KJ-1Yo">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="DYl-x3-Yby" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController clearsSelectionOnViewWillAppear="NO" id="gJJ-ZI-gM1" customClass="EmojiArtDocumentTableViewController" customModule="EmojiArt" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="9BR-Z2-9EN">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="1024"/>
@@ -94,6 +96,7 @@
                         </barButtonItem>
                     </navigationItem>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DYl-x3-Yby" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="200" y="-313"/>
         </scene>
