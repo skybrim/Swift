@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EmojiArtViewController: UIViewController, UIDropInteractionDelegate, UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate
+class EmojiArtViewController: UIViewController, UIDropInteractionDelegate, UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDragDelegate, UICollectionViewDropDelegate
 {
 
     override func viewDidLoad() {
@@ -66,27 +66,27 @@ class EmojiArtViewController: UIViewController, UIDropInteractionDelegate, UIScr
             return emojiArtView.backgroundImage
         }
         set {
-            scrollView?.zoomScale = 1.0
+            backScrollView?.zoomScale = 1.0
             emojiArtView.backgroundImage = newValue
             let size = newValue?.size ?? CGSize.zero
             emojiArtView.frame = CGRect(origin: CGPoint.zero, size: size)
-            scrollView?.contentSize = size
+            backScrollView?.contentSize = size
             scrollViewHeight?.constant = size.height
             scrollViewWidth?.constant = size.width
             if let dropZone = self.dropZone, size.width > 0, size.height > 0 {
-                scrollView?.zoomScale = max(dropZone.bounds.size.width / size.width, dropZone.bounds.size.height / size.height)
+                backScrollView?.zoomScale = max(dropZone.bounds.size.width / size.width, dropZone.bounds.size.height / size.height)
             }
         }
     }
     
     @IBOutlet weak var scrollViewWidth: NSLayoutConstraint!
     @IBOutlet weak var scrollViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var scrollView: UIScrollView! {
+    @IBOutlet weak var backScrollView: UIScrollView! {
         didSet {
-            scrollView.maximumZoomScale = 5.0
-            scrollView.minimumZoomScale = 0.1
-            scrollView.delegate = self
-            scrollView.addSubview(emojiArtView)
+            backScrollView.maximumZoomScale = 5.0
+            backScrollView.minimumZoomScale = 0.1
+            backScrollView.delegate = self
+            backScrollView.addSubview(emojiArtView)
         }
     }
     
@@ -100,10 +100,12 @@ class EmojiArtViewController: UIViewController, UIDropInteractionDelegate, UIScr
     }
     
     //MARK: - CollectionView
-    @IBOutlet weak var collectionView: UICollectionView! {
+    @IBOutlet weak var emojiCollectionView: UICollectionView! {
         didSet {
-            collectionView.delegate = self
-            collectionView.dataSource = self
+            emojiCollectionView.delegate = self
+            emojiCollectionView.dataSource = self
+            emojiCollectionView.dragDelegate = self
+            emojiCollectionView.dropDelegate = self
         }
     }
     
@@ -122,6 +124,65 @@ class EmojiArtViewController: UIViewController, UIDropInteractionDelegate, UIScr
             emojiCell.label.attributedText = text
         }
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
+        return session.canLoadObjects(ofClass: NSAttributedString.self)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
+        let isSelf = (session.localDragSession?.localContext as? UICollectionView) == collectionView
+        return UICollectionViewDropProposal(operation: isSelf ? .move : .copy, intent: .insertAtDestinationIndexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
+        let destionationIndexPath = coordinator.destinationIndexPath ?? IndexPath(item: 0, section: 0)
+        for item in coordinator.items {
+            if let sourceIndexPath = item.sourceIndexPath {
+                if let attributeString = item.dragItem.localObject as? NSAttributedString {
+                    collectionView.performBatchUpdates({
+                        collectionView.deleteItems(at: [sourceIndexPath])
+                        collectionView.insertItems(at: [destionationIndexPath])
+                        emojis.remove(at: sourceIndexPath.item)
+                        emojis.insert(attributeString.string, at: destionationIndexPath.item)
+                    }) { (Bool) in
+                        
+                    }
+                    coordinator.drop(item.dragItem, toItemAt: destionationIndexPath)
+                }
+            } else {
+                let placeholderContext = coordinator.drop(item.dragItem, to: UICollectionViewDropPlaceholder(insertionIndexPath: destionationIndexPath, reuseIdentifier: "PlaceholderCell"))
+                item.dragItem.itemProvider.loadObject(ofClass: NSAttributedString.self) { (provider, error) in
+                    DispatchQueue.main.async {
+                        if let attributeString = provider as? NSAttributedString {
+                            placeholderContext.commitInsertion(dataSourceUpdates: { (insertionIndexPath) in
+                                self.emojis.insert(attributeString.string, at: insertionIndexPath.item)
+                            })
+                        } else {
+                            placeholderContext.deletePlaceholder()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        session.localContext = collectionView
+        return dragItems(at: indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, itemsForAddingTo session: UIDragSession, at indexPath: IndexPath, point: CGPoint) -> [UIDragItem] {
+        return dragItems(at: indexPath)
+    }
+    
+    private func dragItems(at indexPath: IndexPath) -> [UIDragItem] {
+        if let attributeString = (emojiCollectionView.cellForItem(at: indexPath) as? EmojiCollectionViewCell)?.label.attributedText {
+            let dragItem = UIDragItem(itemProvider: NSItemProvider(object: attributeString))
+            dragItem.localObject = attributeString
+            return [dragItem]
+        }
+        return []
     }
     
     /*

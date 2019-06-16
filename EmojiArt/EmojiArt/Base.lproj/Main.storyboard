@@ -71,7 +71,7 @@
                                             <outlet property="label" destination="TR2-AM-Jvo" id="zbg-1L-g9b"/>
                                         </connections>
                                     </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PlaceholdCell" id="Roe-il-LE1">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PlaceholderCell" id="Roe-il-LE1">
                                         <rect key="frame" x="90" y="0.0" width="80" height="80"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -104,9 +104,9 @@
                         <viewLayoutGuide key="safeArea" id="Gck-6d-d8h"/>
                     </view>
                     <connections>
-                        <outlet property="collectionView" destination="mDY-MS-dgb" id="gdM-v0-cNa"/>
+                        <outlet property="backScrollView" destination="Uu9-pb-eBR" id="552-bM-2uT"/>
                         <outlet property="dropZone" destination="KcU-l9-oOQ" id="JGI-es-mWg"/>
-                        <outlet property="scrollView" destination="Uu9-pb-eBR" id="552-bM-2uT"/>
+                        <outlet property="emojiCollectionView" destination="mDY-MS-dgb" id="gdM-v0-cNa"/>
                         <outlet property="scrollViewHeight" destination="TAY-be-J0w" id="Qrp-2b-JLx"/>
                         <outlet property="scrollViewWidth" destination="wdt-T9-cta" id="JAP-pC-eiJ"/>
                     </connections>
