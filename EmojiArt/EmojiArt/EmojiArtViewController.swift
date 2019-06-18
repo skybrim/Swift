@@ -139,7 +139,13 @@ class EmojiArtViewController: UIViewController, UIDropInteractionDelegate, UIScr
         } else if addingEmoji {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TextFieldCell", for: indexPath)
             if let textFieldCell = cell as? TextFieldCollectionViewCell {
-                textFieldCell.textField.becomeFirstResponder()
+                textFieldCell.handleText = { [weak self, unowned textFieldCell] in
+                    if let text = textFieldCell.textField.text {
+                        self?.emojis = (text.map{ String($0) } + self!.emojis).uniquified
+                    }
+                    self?.addingEmoji = false
+                    self?.emojiCollectionView.reloadData()
+                }
             }
             return cell
         } else {
@@ -153,6 +159,12 @@ class EmojiArtViewController: UIViewController, UIDropInteractionDelegate, UIScr
             return CGSize(width: 300, height: 80)
         }
         return CGSize(width: 80, height: 80)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if let textFieldCell = cell as? TextFieldCollectionViewCell {
+            textFieldCell.textField.becomeFirstResponder()
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
