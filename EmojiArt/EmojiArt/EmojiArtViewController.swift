@@ -17,13 +17,22 @@ class EmojiArtViewController: UIViewController, UIDropInteractionDelegate, UIScr
         // Do any additional setup after loading the view.
     }
     
+    //MARK: - Model
+//    var emojiArt: EmojiArt? {
+//        get {
+//            
+//        }
+//        
+//    }
+    
+    
+    //MARK: - drop UIDropInteractionDelegate
     @IBOutlet weak var dropZone: UIView! {
         didSet {
             dropZone.addInteraction(UIDropInteraction(delegate: self))
         }
     }
     
-    //MARK: - UIDropInteractionDelegate
     //这个方法返回是否响应此放置目的地的放置请求
     func dropInteraction(_ interaction: UIDropInteraction, canHandle session: UIDropSession) -> Bool {
         
