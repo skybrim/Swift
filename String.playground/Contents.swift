@@ -89,3 +89,21 @@ print(String(strLast.reversed())) //!dlrow ,olleH
 //[Character] 转 String
 let chars: [Character] = ["H", "e", "l", "l", "o"]
 print(String(chars))
+
+// 用字典和高阶函数计算字符串中每个字符的出现频率，结果 [“h”:1, “e”:1, “l”:2, “o”:1]
+let dic = Dictionary("hello".map{ ($0, 1) }, uniquingKeysWith: +)
+print(dic)
+
+func twoSum(_ nums: [Int], _ target: Int) -> [Int] {
+    var storeDic = [Int: Int]()
+    for (i, num) in nums.enumerated() {
+        if let otherIndex = storeDic[target - num] {
+            return [otherIndex, i]
+        } else {
+            storeDic[num] = i
+        }
+    }
+    return []
+}
+print(twoSum([2, 7, 11, 15], 9))
+

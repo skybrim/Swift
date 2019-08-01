@@ -677,3 +677,11 @@ struct Player {
         health = Player.maxHealth
     }
 }
+
+var swiftArray = [1, 2, 3]
+let ocArray: NSArray = swiftArray as NSArray
+let ocMutableArray: NSMutableArray = NSMutableArray(array: swiftArray)
+swiftArray.append(4)
+swiftArray
+ocArray
+ocMutableArray
